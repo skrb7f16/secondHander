@@ -89,5 +89,18 @@ public class UserPage extends Application {
                 }
             }
         });
+
+        seeMyActivity.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MyActivity m=new MyActivity(databasse);
+                stage.hide();
+                try {
+                    m.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

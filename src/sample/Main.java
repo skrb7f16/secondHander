@@ -16,8 +16,7 @@ import sample.auth.Login;
 import sample.auth.Register;
 import sample.database.MySqlOperations;
 import sample.helper.Utility;
-import sample.models.User;
-import sample.posts.Posts;
+import sample.posts.AllPosts;
 import sample.resources.Params;
 import sample.user.UserPage;
 
@@ -120,7 +119,7 @@ public class Main extends Application {
         posts.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Posts p=new Posts(database);
+                AllPosts p=new AllPosts(database);
                 try {
                     p.start(primaryStage);
                 } catch (Exception e) {

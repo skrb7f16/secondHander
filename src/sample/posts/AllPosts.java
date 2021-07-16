@@ -21,10 +21,10 @@ import sample.models.Item;
 
 import java.util.ArrayList;
 
-public class Posts extends Application {
+public class AllPosts extends Application {
     MySqlOperations database;
     ArrayList<Item> items;
-    public Posts(MySqlOperations database) {
+    public AllPosts(MySqlOperations database) {
         this.database = database;
     }
 
@@ -35,7 +35,7 @@ public class Posts extends Application {
         root.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
         root.getStylesheets().add(getClass().getResource("../resources/css/register.css").toExternalForm());
         root.getStyleClass().add("root");
-        stage.setScene(new Scene(root,800,650));
+        stage.setScene(new Scene(root,800,750));
         stage.setTitle("Posts");
         HBox head=new HBox();
         Image image=new Image(getClass().getResource("../resources/images/back_arrow_icon.png").toExternalForm());
@@ -51,10 +51,11 @@ public class Posts extends Application {
 
         ListView<Item> itemListView=new ListView<>();
         itemListView.setItems(FXCollections.observableList(items));
+        itemListView.setPrefHeight(600);
         itemListView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
             @Override
             public ListCell<Item> call(ListView<Item> itemListView) {
-                return new SinglePost();
+                return new SinglePost(database);
             }
         });
         itemListView.setStyle("-fx-control-inner-background:  #0f2027");
@@ -68,6 +69,20 @@ public class Posts extends Application {
                 stage.hide();
                 try {
                     main.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        itemListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Item item=itemListView.getSelectionModel().getSelectedItem();
+                PostPage postPage=new PostPage(item,database);
+                stage.hide();
+                try {
+                    postPage.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

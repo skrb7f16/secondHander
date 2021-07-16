@@ -178,4 +178,45 @@ public class MySqlOperations {
         }
         return items;
     }
+    public ArrayList<Item> getAllMyPosts() throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select * from item where postedBy=?;");
+        pstm.setInt(1,Params.userId);
+        ResultSet r=pstm.executeQuery();
+        ArrayList<Item> items=new ArrayList<>();
+        while (r.next()){
+            Item item=new Item();
+            item.setId(r.getInt(1));
+            item.setItemName(r.getString(2));
+            item.setPrice(r.getInt(3));
+            item.setItemType(r.getInt(4));
+            item.setDatePosted(r.getTimestamp(5).toString());
+            item.setIsSold(r.getInt(6));
+            item.setSoldTo(r.getInt(7));
+            item.setSoldPrice(r.getInt(8));
+            item.setItemDescription(r.getString(9));
+            item.setPostedBy(r.getInt(10));
+            item.setItemPic(r.getString(11));
+            if(item.getIsSold()==0){
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    public String getUsername(int id) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select username from user where id=?");
+         pstm.setInt(1,id);
+        ResultSet r=pstm.executeQuery();
+        String username="";
+       while (r.next())username=r.getString(1);
+        return username;
+    }
+    public String getTypeName(int id) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select categoryName from category where id=?");
+         pstm.setInt(1,id);
+        ResultSet r=pstm.executeQuery();
+        String catName="";
+       while (r.next())catName=r.getString(1);
+        return catName;
+    }
 }
