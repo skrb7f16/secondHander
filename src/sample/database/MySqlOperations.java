@@ -27,6 +27,8 @@ public class MySqlOperations {
             con=DriverManager.getConnection(Params.urlAfterCreating,Params.USERNAME_FOR_DATABASE,Params.PASSWORD_FOR_DATABASE);
             stmt=con.createStatement();
             stmt.execute(Params.CREATE_USER_TABLE);
+            stmt.execute(Params.CREATE_CATEGORY_TABLE);
+            stmt.execute(Params.CREATE_ITEM_TABLE);
         }catch(Exception e){ System.out.println(e);}
     }
 
@@ -151,5 +153,29 @@ public class MySqlOperations {
         pstm.setString(6,item.getItemPic());
         int r=pstm.executeUpdate();
         return r;
+    }
+
+    public ArrayList<Item> getAllPosts() throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select * from item;");
+        ResultSet r=pstm.executeQuery();
+        ArrayList<Item> items=new ArrayList<>();
+        while (r.next()){
+            Item item=new Item();
+            item.setId(r.getInt(1));
+            item.setItemName(r.getString(2));
+            item.setPrice(r.getInt(3));
+            item.setItemType(r.getInt(4));
+            item.setDatePosted(r.getTimestamp(5).toString());
+            item.setIsSold(r.getInt(6));
+            item.setSoldTo(r.getInt(7));
+            item.setSoldPrice(r.getInt(8));
+            item.setItemDescription(r.getString(9));
+            item.setPostedBy(r.getInt(10));
+            item.setItemPic(r.getString(11));
+            if(item.getIsSold()==0){
+                items.add(item);
+            }
+        }
+        return items;
     }
 }

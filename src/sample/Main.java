@@ -17,6 +17,7 @@ import sample.auth.Register;
 import sample.database.MySqlOperations;
 import sample.helper.Utility;
 import sample.models.User;
+import sample.posts.Posts;
 import sample.resources.Params;
 import sample.user.UserPage;
 
@@ -110,6 +111,18 @@ public class Main extends Application {
                 primaryStage.hide();
                 try {
                     r.start(primaryStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        posts.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Posts p=new Posts(database);
+                try {
+                    p.start(primaryStage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

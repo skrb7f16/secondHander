@@ -27,6 +27,25 @@ public class Params {
             "dateJoined datetime default now()," +
             "token varchar(256) not null,"+
             "totalPost int default 0);";
+    public static String CREATE_CATEGORY_TABLE="create table if not exists category(id int auto_increment primary key," +
+            "     categoryName varchar(64) not null unique," +
+            "     categoryAdded datetime default now()," +
+            "     totalItem int default 0);";
+    public static String CREATE_ITEM_TABLE="create table if not exists item(id int auto_increment primary key," +
+            "     itemName varchar(64) not null," +
+            "     itemPrice int not null," +
+            "     itemType int not null," +
+            "     datePosted datetime default now()," +
+            "     isSold BOOLEAN default false," +
+            "     soldTo int," +
+            "     soldInPrice int," +
+            "     itemDescription text not null," +
+            "     postedBy int not null," +
+            "     foreign key(postedBy) references user(id)," +
+            "     foreign key(soldTo) references user(id)," +
+            "     foreign key(itemType) references category(id)," +
+            "     itemPic varchar(256));";
+
     public static String authFolder="F:/java project/secondHanders/auth/";
     public static String token;
     public static String username;
