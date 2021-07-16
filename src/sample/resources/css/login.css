@@ -1,0 +1,20 @@
+.root{
+    -fx-padding: 10;
+    -fx-alignment: center;
+}
+
+.password{
+    -fx-background-image:url('../images/password_icon.png');
+}
+.username{
+    -fx-background-image:url('../images/last-name.png');
+}
+
+TextField,PasswordField{
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+    -fx-font-size: 20;
+    -fx-background-size: 40;
+    -fx-focus-traversable: false;
+    -fx-padding: 5 5 5 40;
+}

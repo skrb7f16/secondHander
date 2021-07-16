@@ -1,0 +1,27 @@
+.itemName{
+    -fx-background-image:url('../images/item_icon.png');
+}
+.itemPrice{
+    -fx-background-image:url('../images/money_icon.jpg');
+}
+.desc{
+    -fx-background-image:url('../images/desc_icons.png');
+}
+
+.type{
+    -fx-background-image: url('../images/icon-category.jpg');
+    -fx-pref-width: 350;
+}
+TextField,PasswordField,TextArea,ComboBox{
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+    -fx-font-size: 20;
+    -fx-background-size: 40;
+    -fx-focus-traversable: false;
+    -fx-padding: 5 5 5 40;
+}
+
+Button{
+    -fx-pref-width:250;
+    -fx-pref-height: 50;
+}

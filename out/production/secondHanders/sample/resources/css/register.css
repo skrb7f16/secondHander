@@ -1,0 +1,36 @@
+.root{
+    -fx-padding: 10;
+    -fx-alignment: center;
+}
+
+.fname{
+    -fx-background-image:url('../images/first-name-icon.jpg');
+}
+.username{
+    -fx-background-image:url('../images/last-name.png');
+}
+.lname{
+    -fx-background-image:url('../images/first-name-icon.jpg');
+}
+.email{
+    -fx-background-image:url('../images/email_icon.png');
+}
+.phone{
+    -fx-background-image:url('../images/phone_icon.png');
+}
+.password{
+    -fx-background-image:url('../images/password_icon.png');
+}
+.address{
+    -fx-background-image:url('../images/address_icon.png');
+}
+
+TextField,PasswordField,TextArea{
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+    -fx-font-size: 20;
+    -fx-background-size: 40;
+    -fx-focus-traversable: false;
+    -fx-padding: 5 5 5 40;
+}
+

@@ -1,0 +1,39 @@
+.root{
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0f2027,#203a43, #2c5364);
+}
+
+.heading{
+    -fx-text-fill: white;
+    -fx-underline: true;
+    -fx-font: 24 "Ink Free";
+    -fx-alignment: center;
+}
+
+
+
+Button{
+    -fx-padding:5;
+    -fx-border-radius:5;
+    -fx-border-color:#a6190f;
+    -fx-border-style: solid inside;
+    -fx-pref-width:200;
+    -fx-color:#eb4034;
+    -fx-focus-color:transparent;
+    -fx-text-fill: white;
+    -fx-focus-traversable: false;
+
+}
+
+Button:hover{
+    -fx-pref-width:250;
+    -fx-pref-height: 50;
+}
+
+.dp{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-background-color: firebrick;
+    -fx-background-radius: 5;
+
+}
+
