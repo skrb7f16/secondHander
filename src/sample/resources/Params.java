@@ -46,6 +46,19 @@ public class Params {
             "     foreign key(itemType) references category(id)," +
             "     itemPic varchar(256));";
 
+    public static String CREATE_REQUESTS_TABLE="create table if not exists requests(id int auto_increment primary key," +
+            "     onProduct int not null," +
+            "     fromUser int not null," +
+            "     toUser int not null," +
+            "     onDate datetime default now()," +
+            "     isAccepted tinyint default 0," +
+            "     message text not null," +
+            "     priceOffered int not null," +
+            "     foreign key(fromUser) references user(id)" +
+            "     ,foreign key(toUser) references user(id)," +
+            "     foreign key(onProduct) references item(id));";
+
+
     public static String authFolder="F:/java project/secondHanders/auth/";
     public static String token;
     public static String username;

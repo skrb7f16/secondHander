@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import sample.Main;
 import sample.database.MySqlOperations;
+import sample.helper.Utility;
 import sample.models.User;
 import sample.resources.Params;
 
@@ -38,7 +39,7 @@ public class UserPage extends Application {
         root.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
         root.getStylesheets().add(getClass().getResource("../resources/css/login.css").toExternalForm());
         root.getStyleClass().add("root");
-        stage.setScene(new Scene(root,400,500));
+        stage.setScene(new Scene(root,500,700));
         stage.setTitle("User Panel");
         HBox head=new HBox();
         Image image=new Image(getClass().getResource("../resources/images/back_arrow_icon.png").toExternalForm());
@@ -47,9 +48,9 @@ public class UserPage extends Application {
         back.setFitHeight(50);
         back.setPreserveRatio(false);
         Label heading=new Label(Params.username);
-        heading.setPadding(new Insets(0,0,0,20));
+        heading.setPadding(new Insets(0,0,0,30));
         heading.getStyleClass().add("heading");
-        heading.setPrefWidth(250);
+        heading.setPrefWidth(320);
         heading.setAlignment(Pos.CENTER);
         head.getChildren().addAll(back,heading);
         Image pic=new Image(getClass().getResource("../"+Params.currentUser.getDp()).toExternalForm());
@@ -63,8 +64,12 @@ public class UserPage extends Application {
         Button seeMyActivity=new Button("My Activity");
         Button postAnItem=new Button("Post an Item");
         Button logout=new Button("Logout");
+        Button seeProfile=new Button("See my profile");
+        Button editProfile=new Button("Edit my Profile");
+        Button seeMyRequests=new Button("My requests");
+        Button madeRequests=new Button("Requests on my products");
         root.setSpacing(20);
-        root.getChildren().addAll(head,rectangle,seeMyActivity,postAnItem,logout);
+        root.getChildren().addAll(head,rectangle,seeMyActivity,postAnItem,seeProfile,editProfile,seeMyRequests,madeRequests,logout);
         stage.show();
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -97,6 +102,29 @@ public class UserPage extends Application {
                 stage.hide();
                 try {
                     m.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        logout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    Utility.logout(stage,databasse);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        seeProfile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MyProfile myProfile=new MyProfile(databasse);
+                try {
+                    myProfile.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

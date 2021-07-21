@@ -2,6 +2,7 @@ package sample.database;
 
 import sample.models.Category;
 import sample.models.Item;
+import sample.models.Requests;
 import sample.models.User;
 import sample.resources.Params;
 
@@ -29,6 +30,7 @@ public class MySqlOperations {
             stmt.execute(Params.CREATE_USER_TABLE);
             stmt.execute(Params.CREATE_CATEGORY_TABLE);
             stmt.execute(Params.CREATE_ITEM_TABLE);
+            stmt.execute(Params.CREATE_REQUESTS_TABLE);
         }catch(Exception e){ System.out.println(e);}
     }
 
@@ -213,10 +215,86 @@ public class MySqlOperations {
     }
     public String getTypeName(int id) throws SQLException {
         PreparedStatement pstm=con.prepareStatement("select categoryName from category where id=?");
-         pstm.setInt(1,id);
+        pstm.setInt(1,id);
         ResultSet r=pstm.executeQuery();
         String catName="";
        while (r.next())catName=r.getString(1);
         return catName;
+    }
+
+
+
+    public int addRequest(String message,int offer,int toUser,int onProduct) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("insert into requests(onProduct,fromUser,toUser,message,priceOffered)" +
+                "values(?,?,?,?,?)");
+        pstm.setInt(1,onProduct);
+        pstm.setInt(2,Params.userId);
+        pstm.setInt(3,toUser);
+        pstm.setString(4,message);
+        pstm.setInt(5,offer);
+        int r=pstm.executeUpdate();
+        return r;
+    }
+
+    public int updateProfile(User user) throws SQLException, NoSuchAlgorithmException, InvalidKeySpecException {
+        PreparedStatement pstm=con.prepareStatement("update user set fname=? and lname=?" +
+                "address=? and phone=? and email=? and username=? and password=? and token=? where id=?");
+        pstm.setString(1,user.getFname());
+        pstm.setString(2,user.getLname());
+        pstm.setString(3,user.getAddress());
+        pstm.setLong(4,user.getPhoneNo());
+        pstm.setString(5,user.getEmail());
+        pstm.setString(6,user.getUsername());
+        pstm.setString(7,user.getPassword());
+        byte[] salt = new byte[16];
+        KeySpec spec = new PBEKeySpec((user.getUsername()+user.getPassword()).toCharArray(), salt, 65536, 128);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = factory.generateSecret(spec).getEncoded();
+        StringBuilder sb=new StringBuilder();
+        for (int i=0;i<hash.length;i++){
+            sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        pstm.setString(8,user.getToken());
+        int r=pstm.executeUpdate();
+        return r;
+    }
+
+    public ArrayList<Requests> getMyRequests() throws SQLException {
+        ArrayList<Requests> requests=new ArrayList<>();
+        PreparedStatement pstm=con.prepareStatement("select * from requests where fromUser=?");
+        pstm.setInt(1,Params.userId);
+        ResultSet r=pstm.executeQuery();
+        while (r.next()){
+            Requests req=new Requests();
+            req.setId(r.getInt(1));
+            req.setOnProduct(r.getInt(2));
+            req.setFromUser(r.getInt(3));
+            req.setToUser(r.getInt(4));
+            req.setOnDate(r.getTimestamp(5).toString());
+            req.setIsAccepted(r.getInt(6));
+            req.setMessage(r.getString(7));
+            req.setOfferedPrice(r.getInt(8));
+            requests.add(req);
+        }
+        return requests;
+    }
+    public ArrayList<Requests> getRequestsOnMyProducts() throws SQLException {
+        ArrayList<Requests> requests=new ArrayList<>();
+        PreparedStatement pstm=con.prepareStatement("select * from requests where toUser=?");
+        pstm.setInt(1,Params.userId);
+        ResultSet r=pstm.executeQuery();
+        while (r.next()){
+            Requests req=new Requests();
+            req.setId(r.getInt(1));
+            req.setOnProduct(r.getInt(2));
+            req.setFromUser(r.getInt(3));
+            req.setToUser(r.getInt(4));
+            req.setOnDate(r.getTimestamp(5).toString());
+            req.setIsAccepted(r.getInt(6));
+            req.setMessage(r.getString(7));
+            req.setOfferedPrice(r.getInt(8));
+            requests.add(req);
+        }
+        return requests;
     }
 }

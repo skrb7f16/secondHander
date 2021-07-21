@@ -1,10 +1,11 @@
 package sample.helper;
 
+import javafx.stage.Stage;
+import sample.Main;
 import sample.database.MySqlOperations;
 import sample.resources.Params;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -31,5 +32,25 @@ public class Utility {
             Params.currentUser=database.getUser();
 
         }
+    }
+
+    public static void logout(Stage stage,MySqlOperations database) throws Exception {
+        FileOutputStream writer = new FileOutputStream(Params.authFolder+"token.txt");
+        writer.write(("").getBytes());
+        writer.close();
+        writer=new FileOutputStream(Params.authFolder+"username.txt");
+        writer.write(("").getBytes());
+        writer.close();
+        writer = new FileOutputStream(Params.authFolder+"userid.txt");
+        writer.write(("").getBytes());
+        writer.close();
+        Params.currentUser=null;
+        Params.loogedIn=false;
+        Params.username=null;
+        Params.token=null;
+        stage.hide();
+        Main main=new Main(database);
+        main.start(stage);
+
     }
 }

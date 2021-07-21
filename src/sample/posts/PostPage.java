@@ -1,12 +1,11 @@
 package sample.posts;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sample.Main;
 import sample.database.MySqlOperations;
+import sample.helper.AlertHelper;
 import sample.models.Item;
 import sample.resources.Params;
+
+import java.sql.SQLException;
 
 public class PostPage extends Application {
     Item item;
@@ -50,23 +52,26 @@ public class PostPage extends Application {
         ImageView itemPic=new ImageView(new Image(getClass().getResource("../"+ Params.baseDirectoryForItemImage+item.getItemPic()+".jpg").toExternalForm()));
         itemPic.setFitHeight(200);
         itemPic.setFitWidth(200);
-        Label itemPrice=new Label(""+item.getPrice());
+        Label itemPrice=new Label("Price : Rs. "+item.getPrice());
         Label postedBy=new Label("Posted by : "+database.getUsername(item.getPostedBy()));
         Label itemDesc=new Label(item.getItemDescription());
         Label itemType=new Label(database.getTypeName(item.getItemType()));
-        Label datePosted=new Label(item.getDatePosted());
-        TextField makeOffer=new TextField();
+        Label datePosted=new Label("Posted at :-"+item.getDatePosted());
+        datePosted.getStyleClass().add("date");
+        TextArea makeOffer= new TextArea();
         makeOffer.setPromptText("Enter your offer as price or message");
         makeOffer.getStyleClass().add("offer");
+        makeOffer.setPrefRowCount(2);
         Button submit=new Button("Make An offer");
-        TextField phoneNo=new TextField();
-        phoneNo.setPromptText("Enter your phone no");
-        phoneNo.getStyleClass().add("phone");
-        if(item.getPostedBy()!=Params.userId)
-        root.getChildren().addAll(head,itemPic,itemType,postedBy,datePosted,itemPrice,itemDesc,makeOffer,phoneNo,submit);
+        TextField moneyOffered=new TextField();
+        moneyOffered.setPromptText("Enter your offer price");
+        moneyOffered.getStyleClass().add("phone");
+        if(item.getPostedBy()!=Params.userId && Params.loogedIn)
+        root.getChildren().addAll(head,itemPic,itemType,postedBy,datePosted,itemPrice,itemDesc,makeOffer,moneyOffered,submit);
         else
             root.getChildren().addAll(head,itemPic,itemType,postedBy,datePosted,itemPrice,itemDesc);
         stage.show();
+        root.setSpacing(5);
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -76,6 +81,32 @@ public class PostPage extends Application {
                     main.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(makeOffer.getText().length()<10 || moneyOffered.getText().length()==0){
+                    AlertHelper.showAlert(Alert.AlertType.ERROR,stage,"Error","Cannot make an empty request");
+                    return;
+                }
+                try {
+                    int r=database.addRequest(makeOffer.getText(),Integer.parseInt(moneyOffered.getText()),
+                            item.getPostedBy(),item.getId()
+                            );
+                    if(r==1){
+                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION,stage,"Success","Request has been made");
+                        makeOffer.setText("");
+                        moneyOffered.setText("");
+                    }
+                    else{
+                        AlertHelper.showAlert(Alert.AlertType.ERROR,stage,"Error","Cannot make an request sorry :(");
+                    }
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
             }
         });

@@ -13,7 +13,7 @@ Label{
 }
 
 .phone{
-    -fx-background-image: url('../images/phone_icon.png');
+    -fx-background-image: url('../images/money_icon.jpg');
 }
 TextField,PasswordField,TextArea{
     -fx-background-repeat: no-repeat;
@@ -22,4 +22,13 @@ TextField,PasswordField,TextArea{
     -fx-background-size: 40;
     -fx-focus-traversable: false;
     -fx-padding: 5 5 5 40;
+}
+
+Label{
+    -fx-text-alignment: left;
+    -fx-pref-width: 400;
+}
+
+.date{
+    -fx-font: 12 "ink free";
 }

@@ -1,5 +1,8 @@
 Label{
     -fx-text-fill: white;
-    -fx-font: bold 20  "ink free";
+    -fx-font:  20  "ink free";
 }
 
+.date{
+    -fx-font: 12 "ink free";
+}

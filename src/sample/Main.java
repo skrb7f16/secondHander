@@ -23,10 +23,19 @@ import sample.user.UserPage;
 
 public class Main extends Application {
     MySqlOperations database;
+
+    public Main(MySqlOperations database) {
+        this.database = database;
+    }
+
+    public Main() {
+        database=new MySqlOperations();
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setResizable(false);
-        database=new MySqlOperations();
+
         Utility.checkloggedIn(database);
         VBox root=new VBox();
         root.getStyleClass().add("root");
