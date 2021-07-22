@@ -66,9 +66,9 @@ public class UserPage extends Application {
         Button seeProfile=new Button("See my profile");
         Button editProfile=new Button("Edit my Profile");
         Button seeMyRequests=new Button("My requests");
-        Button madeRequests=new Button("Requests on my products");
+        Button requestsOnMyProducts=new Button("Requests on my products");
         root.setSpacing(20);
-        root.getChildren().addAll(head,rectangle,seeMyActivity,postAnItem,seeProfile,editProfile,seeMyRequests,madeRequests,logout);
+        root.getChildren().addAll(head,rectangle,seeMyActivity,postAnItem,seeProfile,editProfile,seeMyRequests,requestsOnMyProducts,logout);
         stage.show();
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -138,6 +138,18 @@ public class UserPage extends Application {
                     e.start(stage);
                 } catch (Exception exception) {
                     exception.printStackTrace();
+                }
+            }
+        });
+        requestsOnMyProducts.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                RequestsOnMyProduct r=new RequestsOnMyProduct(databasse);
+                stage.hide();
+                try {
+                    r.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

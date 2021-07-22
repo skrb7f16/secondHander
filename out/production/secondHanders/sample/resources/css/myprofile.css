@@ -1,0 +1,8 @@
+Label{
+    -fx-font:normal bold 20 'serif';
+    -fx-text-fill: white;
+}
+
+Text{
+    -fx-fill: white;
+}
