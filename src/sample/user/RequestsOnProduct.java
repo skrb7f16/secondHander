@@ -1,4 +1,11 @@
 package sample.user;
 
-public class RequestsOnProduct {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class RequestsOnProduct extends Application {
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

@@ -16,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import sample.Main;
@@ -127,6 +126,18 @@ public class UserPage extends Application {
                     myProfile.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+        editProfile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                EditProfile e=new EditProfile(databasse);
+                stage.hide();
+                try {
+                    e.start(stage);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
             }
         });

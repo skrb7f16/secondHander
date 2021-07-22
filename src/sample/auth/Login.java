@@ -26,6 +26,10 @@ public class Login extends Application {
         this.database = database;
     }
 
+    public Login() {
+        database=new MySqlOperations();
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         VBox root=new VBox();

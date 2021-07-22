@@ -237,8 +237,8 @@ public class MySqlOperations {
     }
 
     public int updateProfile(User user) throws SQLException, NoSuchAlgorithmException, InvalidKeySpecException {
-        PreparedStatement pstm=con.prepareStatement("update user set fname=? and lname=?" +
-                "address=? and phone=? and email=? and username=? and password=? and token=? where id=?");
+        PreparedStatement pstm=con.prepareStatement("update user set fname=?,  lname=?,  " +
+                "address=?,  phoneNo=?,  email=?,  username=?,  password=?,  token=? where id=?");
         pstm.setString(1,user.getFname());
         pstm.setString(2,user.getLname());
         pstm.setString(3,user.getAddress());
@@ -254,7 +254,8 @@ public class MySqlOperations {
         for (int i=0;i<hash.length;i++){
             sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
         }
-        pstm.setString(8,user.getToken());
+        pstm.setString(8,sb.toString());
+        pstm.setInt(9,Params.userId);
         int r=pstm.executeUpdate();
         return r;
     }
