@@ -28,6 +28,7 @@ public class MyProfile extends Application {
 
     public MyProfile(MySqlOperations database) {
         this.database = database;
+
     }
 
     @Override
@@ -76,8 +77,8 @@ public class MyProfile extends Application {
         grid.add(userNameL,0,2);
         grid.add(userNameLValue,1,2);
 
-        Label pw=new Label("Password");
-        Label pwValue =new Label(Params.currentUser.getPassword());
+        Label pw=new Label("Phone no");
+        Label pwValue =new Label(""+Params.currentUser.getPhoneNo());
         grid.add(pw,0,3);
         grid.add(pwValue,1,3);
 
