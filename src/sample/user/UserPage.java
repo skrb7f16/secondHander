@@ -153,5 +153,18 @@ public class UserPage extends Application {
                 }
             }
         });
+
+        seeMyRequests.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MyRequests myRequests=new MyRequests(databasse);
+                stage.hide();
+                try {
+                    myRequests.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

@@ -221,6 +221,14 @@ public class MySqlOperations {
        while (r.next())catName=r.getString(1);
         return catName;
     }
+    public String getProductName(int id) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select itemName from item where id=?");
+        pstm.setInt(1,id);
+        ResultSet r=pstm.executeQuery();
+        String catName="";
+       while (r.next())catName=r.getString(1);
+        return catName;
+    }
 
 
 
