@@ -36,12 +36,14 @@ public class PostAnItem extends Application {
     MySqlOperations database;
     ArrayList<Category>categories=new ArrayList<>();
     String path;
+    Stage stage;
     public PostAnItem(MySqlOperations database) {
         this.database = database;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage=stage;
         categories=database.getCategories();
         VBox root=new VBox();
         root.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
@@ -170,9 +172,10 @@ public class PostAnItem extends Application {
                 fileChooser.getExtensionFilters()
                         .addAll(extFilterJPG, extFilterjpg );
                 File file = fileChooser.showOpenDialog(null);
-                imageName.setText(file.getPath());
-                path=file.getPath();
-
+                if(file!=null) {
+                    imageName.setText(file.getPath());
+                    path = file.getPath();
+                }
             }
         });
         submit.setOnAction(new EventHandler<ActionEvent>() {
@@ -186,7 +189,10 @@ public class PostAnItem extends Application {
                     int r=database.addAnItem(item);
                     if(r==1){
                         saveImage(item.getItemPic());
-                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION,stage,"congrats","Your post is uploaded");
+                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION,stage,"congrats","Your post is uploaded please launch and again to see your posts");
+
+
+
                         itemName.setText("");
                         itemPrice.setText("");
                         itemDesc.setText("");
@@ -198,6 +204,8 @@ public class PostAnItem extends Application {
                     e.printStackTrace();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -205,27 +213,34 @@ public class PostAnItem extends Application {
     }
 
 
-    void saveImage(String itemPic){
+    int saveImage(String itemPic) throws IOException {
         File file=new File(path);
         if (file != null) {
+
             File saveLocation = new File(Params.baseDirectoryForItemImageForCopying+itemPic+".jpg");
 
             saveLocation.setWritable(true);
+            InputStream is=null;
+            OutputStream os=null;
             try {
-                InputStream is = new FileInputStream(file);
-                OutputStream os = new FileOutputStream(saveLocation);
+                 is = new FileInputStream(file);
+                 os = new FileOutputStream(saveLocation);
                 byte[] buf = new byte[1024];
                 int byteReads;
                 while ((byteReads = is.read(buf)) > 0) {
                     os.write(buf, 0, byteReads);
                 }
-                is.close();
-                os.close();
+
+                return 1;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+                is.close();
+                os.close();
             }
         }
+        return 0;
     }
 }

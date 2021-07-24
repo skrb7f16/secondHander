@@ -1,5 +1,7 @@
 package sample.user;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,16 +10,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import sample.database.MySqlOperations;
 import sample.models.Requests;
+import sample.models.User;
 
 import java.sql.SQLException;
 
 public class SingleRequestMadeByMe extends ListCell<Requests> {
     MySqlOperations database;
-
-    public SingleRequestMadeByMe(MySqlOperations database) {
+    Stage stage;
+    public SingleRequestMadeByMe(MySqlOperations database,Stage stage) {
         this.database = database;
+        this.stage=stage;
     }
 
     @Override
@@ -91,6 +96,24 @@ public class SingleRequestMadeByMe extends ListCell<Requests> {
             price.setStyle("-fx-font:normal bold 18 'serif' ");
             accepted.setStyle("-fx-font:normal bold 18 'serif' ");
             setGraphic(grid);
+            if(requests.getIsAccepted()==0){
+                btn.setDisable(true);
+            }
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    try {
+                        User user=database.getUser(requests.getToUser());
+                        UserProfile profile=new UserProfile(database,user,1);
+                        stage.hide();
+                        profile.start(stage);
+
+                    } catch (Exception throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            });
         }
         else{
             setGraphic(null);

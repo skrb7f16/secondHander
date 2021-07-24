@@ -55,6 +55,7 @@ public class PostPage extends Application {
         Label itemPrice=new Label("Price : Rs. "+item.getPrice());
         Label postedBy=new Label("Posted by : "+database.getUsername(item.getPostedBy()));
         Label itemDesc=new Label(item.getItemDescription());
+        itemDesc.setWrapText(true);
         Label itemType=new Label(database.getTypeName(item.getItemType()));
         Label datePosted=new Label("Posted at :-"+item.getDatePosted());
         datePosted.getStyleClass().add("date");

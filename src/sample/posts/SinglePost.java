@@ -12,6 +12,7 @@ import sample.database.MySqlOperations;
 import sample.models.Item;
 import sample.resources.Params;
 
+import java.io.File;
 import java.sql.SQLException;
 
 public class SinglePost extends ListCell<Item> {
@@ -50,11 +51,17 @@ public class SinglePost extends ListCell<Item> {
     @Override
     protected void updateItem(Item item, boolean b) {
         super.updateItem(item, b);
-        if(item!=null && !b){
+        if(item!=null && !b ){
 
             itemname.setText(item.getItemName());
             price.setText("Price : Rs. "+item.getPrice());
-            itemPic.setImage(new Image(getClass().getResource("../"+ Params.baseDirectoryForItemImage+item.getItemPic()+".jpg").toExternalForm()));
+            Image image = null;
+            try {
+                 image = new Image(getClass().getResource("../" + Params.baseDirectoryForItemImage + item.getItemPic() + ".jpg").toExternalForm());
+            }
+            catch (Exception e){
+
+            }
             datePosted.setText("Posted at :-"+item.getDatePosted());
             try {
                 postedBy.setText("Posted by : "+database.getUsername(item.getPostedBy()));
@@ -62,7 +69,14 @@ public class SinglePost extends ListCell<Item> {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            setGraphic(root);
+
+            if(image!=null) {
+                itemPic.setImage(image);
+                setGraphic(root);
+            }
+            else{
+                setGraphic(null);
+            }
         }
         else{
             setGraphic(null);

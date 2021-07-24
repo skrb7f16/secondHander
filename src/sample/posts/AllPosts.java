@@ -21,6 +21,7 @@ import sample.models.Item;
 
 import java.util.ArrayList;
 
+
 public class AllPosts extends Application {
     MySqlOperations database;
     ArrayList<Item> items;
@@ -79,6 +80,7 @@ public class AllPosts extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Item item=itemListView.getSelectionModel().getSelectedItem();
+                if(item!=null){
                 PostPage postPage=new PostPage(item,database);
                 stage.hide();
                 try {
@@ -86,7 +88,7 @@ public class AllPosts extends Application {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }}
         });
     }
 }

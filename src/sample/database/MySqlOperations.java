@@ -5,7 +5,6 @@ import sample.models.Item;
 import sample.models.Requests;
 import sample.models.User;
 import sample.resources.Params;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.FileWriter;
@@ -122,6 +121,30 @@ public class MySqlOperations {
         }
         return u;
     }
+
+    public User getUser(int id) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select * from user where id=?");
+        pstm.setInt(1,id);
+        ResultSet resultSet=pstm.executeQuery();
+        User u=null;
+        while (resultSet.next()){
+            u=new User();
+            u.setId(resultSet.getInt(1));
+            u.setFname(resultSet.getString(2));
+            u.setLname(resultSet.getString(3));
+            u.setUsername(resultSet.getString(4));
+            u.setPassword(resultSet.getString(5));
+            u.setDp(resultSet.getString(6));
+            u.setPhoneNo(resultSet.getLong(7));
+            u.setEmail(resultSet.getString(8));
+            u.setAddress(resultSet.getString(9));
+            u.setDateJoined(resultSet.getTimestamp(10).toString());
+            u.setToken(resultSet.getString(11));
+            u.setTotalPost(resultSet.getInt(12));
+
+        }
+        return u;
+    }
     public ArrayList<Category> getCategories() throws SQLException {
         PreparedStatement pstm=con.prepareStatement("select * from category");
         ResultSet r=pstm.executeQuery();
@@ -181,7 +204,7 @@ public class MySqlOperations {
         return items;
     }
     public ArrayList<Item> getAllMyPosts() throws SQLException {
-        PreparedStatement pstm=con.prepareStatement("select * from item where postedBy=?;");
+        PreparedStatement pstm=con.prepareStatement("select * from item where postedBy=? order by datePosted ;");
         pstm.setInt(1,Params.userId);
         ResultSet r=pstm.executeQuery();
         ArrayList<Item> items=new ArrayList<>();
@@ -306,4 +329,27 @@ public class MySqlOperations {
         }
         return requests;
     }
+
+    public int acceptRequest(Requests requests) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("update requests set isAccepted=1 where id=?");
+        pstm.setInt(1,requests.getId());
+        int r=pstm.executeUpdate();
+        if(r==1){
+            pstm=con.prepareStatement("update item set isSold=true, soldInPrice=?, soldTo=? where id=?");
+            pstm.setInt(1,requests.getOfferedPrice());
+            pstm.setInt(2,requests.getFromUser());
+            pstm.setInt(3,requests.getOnProduct());
+            r=pstm.executeUpdate();
+
+        }
+        return r;
+    }
+
+    public int deleteRequest(Requests requests) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("delete from requests where id=?");
+        pstm.setInt(1,requests.getId());
+        int r=pstm.executeUpdate();
+        return r;
+    }
+
 }

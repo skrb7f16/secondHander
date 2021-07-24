@@ -121,7 +121,7 @@ public class UserPage extends Application {
         seeProfile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                MyProfile myProfile=new MyProfile(databasse);
+                UserProfile myProfile=new UserProfile(databasse);
                 try {
                     myProfile.start(stage);
                 } catch (Exception e) {

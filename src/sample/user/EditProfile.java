@@ -145,7 +145,7 @@ public class EditProfile extends Application {
                     if(r==1){
                         saveImage(username.getText());
                         AlertHelper.showAlert(Alert.AlertType.INFORMATION,stage,"Congrats","Your profile is " +
-                                "updated please login again to see the changes");
+                                "updated please login again and restart application to see the changes");
 
                     }
                 } catch (SQLException throwables) {

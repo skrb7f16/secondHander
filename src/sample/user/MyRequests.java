@@ -60,7 +60,7 @@ public class MyRequests extends Application {
         itemListView.setCellFactory(new Callback<ListView<Requests>, ListCell<Requests>>() {
             @Override
             public ListCell<Requests> call(ListView<Requests> itemListView) {
-                return new SingleRequestMadeByMe(database);
+                return new SingleRequestMadeByMe(database,stage);
             }
         });
         itemListView.setStyle("-fx-control-inner-background:  #0f2027");

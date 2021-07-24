@@ -21,14 +21,25 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.database.MySqlOperations;
+import sample.models.User;
 import sample.resources.Params;
 
-public class MyProfile extends Application {
+public class UserProfile extends Application {
     MySqlOperations database;
-
-    public MyProfile(MySqlOperations database) {
+    User user;
+    Boolean visiter;
+    int from;
+    public UserProfile(MySqlOperations database) {
         this.database = database;
+        user=Params.currentUser;
+        visiter=false;
+    }
 
+    public UserProfile(MySqlOperations database, User user,int from) {
+        this.database = database;
+        this.user = user;
+        visiter=true;
+        this.from=from;
     }
 
     @Override
@@ -45,7 +56,7 @@ public class MyProfile extends Application {
         back.setFitWidth(50);
         back.setFitHeight(50);
         back.setPreserveRatio(false);
-        Image pic=new Image(getClass().getResource("../"+Params.currentUser.getDp()).toExternalForm());
+        Image pic=new Image(getClass().getResource("../"+user.getDp()).toExternalForm());
         Rectangle rectangle = new Rectangle(0, 0, 280, 220);
         rectangle.setArcWidth(100.0);
         rectangle.setArcHeight(100.0);
@@ -61,40 +72,43 @@ public class MyProfile extends Application {
         grid.setHgap(20);
         grid.setVgap(20);
         grid.setPadding(new Insets(25,25,25,25));
-
-        Text scenetitle =new Text("Welcome "+Params.username);
+        Text scenetitle;
+        if(!visiter)
+         scenetitle =new Text("Welcome "+user.getUsername());
+        else
+            scenetitle=new Text(user.getUsername());
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL,30));
         grid.add(scenetitle,0,0,2,1);
 
         Label userName =new Label("Firstname");
-        Label userNameValue=new Label(Params.currentUser.getFname());
+        Label userNameValue=new Label(user.getFname());
         grid.add(userName,0,1);
         grid.add(userNameValue,1,1);
 
 
         Label userNameL =new Label("Lastname");
-        Label userNameLValue =new Label(Params.currentUser.getLname());
+        Label userNameLValue =new Label(user.getLname());
         grid.add(userNameL,0,2);
         grid.add(userNameLValue,1,2);
 
         Label pw=new Label("Phone no");
-        Label pwValue =new Label(""+Params.currentUser.getPhoneNo());
+        Label pwValue =new Label(""+user.getPhoneNo());
         grid.add(pw,0,3);
         grid.add(pwValue,1,3);
 
         Label mailId =new Label("Email");
-        Label mailIdValue =new Label(Params.currentUser.getEmail());
+        Label mailIdValue =new Label(user.getEmail());
         grid.add(mailId,0,4);
         grid.add(mailIdValue,1,4);
 
         Label location =new Label("Location");
-        Label locationValue =new Label(Params.currentUser.getAddress());
+        Label locationValue =new Label(user.getAddress());
         grid.add(location,0,5);
         grid.add(locationValue,1,5);
 
 
         Label itemsTotal =new Label("Posts");
-        Label itemsValue =new Label(""+Params.currentUser.getTotalPost());
+        Label itemsValue =new Label(""+user.getTotalPost());
         grid.add(itemsTotal,0,6);
         grid.add(itemsValue,1,6);
 
@@ -110,13 +124,38 @@ public class MyProfile extends Application {
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                UserPage main=new UserPage(database);
-                stage.hide();
-                try {
-                    main.start(stage);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(!visiter){
+                    UserPage main=new UserPage(database);
+                    stage.hide();
+                    try {
+                        main.start(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                else{
+                    if(from==2){
+                    RequestsOnMyProduct req=new RequestsOnMyProduct(database);
+
+                    stage.hide();
+                    try {
+                        req.start(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                        MyRequests req=new MyRequests(database);
+
+                        stage.hide();
+                        try {
+                            req.start(stage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
             }
         });
     }

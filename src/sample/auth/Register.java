@@ -132,7 +132,7 @@ public class Register extends Application {
                     int r=database.register(user);
                     if(r==1){
                         saveImage(username.getText());
-                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION,stage,"Congrats",username.getText()+" is registered successfully");
+                        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION,stage,"Congrats",username.getText()+" is registered successfully restart your application to logins");
                         fname.setText("");
                         lname.setText("");
                         username.setText("");

@@ -23,7 +23,7 @@ import sample.user.UserPage;
 
 public class Main extends Application {
     MySqlOperations database;
-
+    public static String [] argss;
     public Main(MySqlOperations database) {
         this.database = database;
     }
@@ -140,6 +140,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        argss=args;
         launch(args);
     }
 }
