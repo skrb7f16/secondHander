@@ -174,18 +174,22 @@ public class EditProfile extends Application {
         File file=new File(path);
         if (file != null) {
             File saveLocation = new File(Params.baseDirectoryForDpForCopying+username+".jpg");
+            File saveLocation1 = new File(Params.baseDirectoryForDpForCopying2+username+".jpg");
 
             saveLocation.setWritable(true);
             try {
                 InputStream is = new FileInputStream(file);
                 OutputStream os = new FileOutputStream(saveLocation);
+                OutputStream os2 = new FileOutputStream(saveLocation1);
                 byte[] buf = new byte[1024];
                 int byteReads;
                 while ((byteReads = is.read(buf)) > 0) {
                     os.write(buf, 0, byteReads);
+                    os2.write(buf, 0, byteReads);
                 }
                 is.close();
                 os.close();
+                os2.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

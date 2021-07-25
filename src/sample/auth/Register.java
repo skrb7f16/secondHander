@@ -19,7 +19,6 @@ import sample.database.MySqlOperations;
 import sample.helper.AlertHelper;
 import sample.models.User;
 import sample.resources.Params;
-
 import java.io.*;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
