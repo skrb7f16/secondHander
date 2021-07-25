@@ -218,17 +218,21 @@ public class PostAnItem extends Application {
         if (file != null) {
 
             File saveLocation = new File(Params.baseDirectoryForItemImageForCopying+itemPic+".jpg");
+            File saveLocation1 = new File(Params.baseDirectoryForItemImageForCopying2+itemPic+".jpg");
 
             saveLocation.setWritable(true);
             InputStream is=null;
             OutputStream os=null;
+            OutputStream os2=null;
             try {
                  is = new FileInputStream(file);
                  os = new FileOutputStream(saveLocation);
+                 os2 = new FileOutputStream(saveLocation1);
                 byte[] buf = new byte[1024];
                 int byteReads;
                 while ((byteReads = is.read(buf)) > 0) {
                     os.write(buf, 0, byteReads);
+                    os2.write(buf,0,byteReads);
                 }
 
                 return 1;
@@ -239,6 +243,7 @@ public class PostAnItem extends Application {
             }finally {
                 is.close();
                 os.close();
+                os2.close();
             }
         }
         return 0;

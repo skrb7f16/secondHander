@@ -7,8 +7,10 @@ public class Params {
     public static String databaseName=" secondhander";
     public static String baseDirectoryForDp="../images/dp/";
     public static String baseDirectoryForDpForCopying="F:\\java project\\secondHanders\\src\\images\\dp\\";
+    public static String baseDirectoryForDpForCopying2="F:\\java project\\secondHanders\\out\\production\\secondHanders\\images\\dp\\";
     public static String baseDirectoryForItemImage="../images/posts/";
     public static String baseDirectoryForItemImageForCopying="F:\\java project\\secondHanders\\src\\images\\posts\\";
+    public static String baseDirectoryForItemImageForCopying2="F:\\java project\\secondHanders\\out\\production\\secondHanders\\images\\posts\\";
     public static String url = "jdbc:mysql://localhost:3306";
     public static String urlAfterCreating = "jdbc:mysql://localhost:3306/"+databaseName;
     public static String USERNAME_FOR_DATABASE = "root";

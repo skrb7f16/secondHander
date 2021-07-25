@@ -66,9 +66,11 @@ public class UserPage extends Application {
         Button seeProfile=new Button("See my profile");
         Button editProfile=new Button("Edit my Profile");
         Button seeMyRequests=new Button("My requests");
+
         Button requestsOnMyProducts=new Button("Requests on my products");
+        Button myRewards=new Button("My Rewards");
         root.setSpacing(20);
-        root.getChildren().addAll(head,rectangle,seeMyActivity,postAnItem,seeProfile,editProfile,seeMyRequests,requestsOnMyProducts,logout);
+        root.getChildren().addAll(head,rectangle,seeMyActivity,postAnItem,seeProfile,editProfile,seeMyRequests,requestsOnMyProducts,myRewards,logout);
         stage.show();
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -161,6 +163,19 @@ public class UserPage extends Application {
                 stage.hide();
                 try {
                     myRequests.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        myRewards.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MyRewards m=new MyRewards(databasse);
+                stage.hide();
+                try {
+                    m.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

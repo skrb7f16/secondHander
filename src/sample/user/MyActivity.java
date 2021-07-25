@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import sample.Main;
 import sample.database.MySqlOperations;
 import sample.models.Item;
 import sample.posts.PostPage;
