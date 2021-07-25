@@ -10,7 +10,18 @@ public class User {
     String email;
     String dateJoined;
     String token;
-    int id,totalPost;
+    int id;
+    int totalPost;
+
+    public int getTotalReward() {
+        return totalReward;
+    }
+
+    public void setTotalReward(int totalReward) {
+        this.totalReward = totalReward;
+    }
+
+    int totalReward;
     long phoneNo;
 
     public String getDateJoined() {

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import sample.database.MySqlOperations;
 import sample.models.Requests;
 import sample.models.User;
+import sample.resources.Params;
 
 import java.sql.SQLException;
 
@@ -103,6 +104,7 @@ public class SingleRequestMadeByMe extends ListCell<Requests> {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     try {
+
                         User user=database.getUser(requests.getToUser());
                         UserProfile profile=new UserProfile(database,user,1);
                         stage.hide();

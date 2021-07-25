@@ -80,7 +80,7 @@ public class MyActivity extends Application {
             public void handle(MouseEvent mouseEvent) {
                 Item item=itemListView.getSelectionModel().getSelectedItem();
                 if(item!=null){
-                PostPage postPage=new PostPage(item,database);
+                PostPage postPage=new PostPage(item,database,"Userpage");
                 stage.hide();
                 try {
                     postPage.start(stage);

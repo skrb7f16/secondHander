@@ -28,7 +28,8 @@ public class Params {
             "address varchar(256) not null," +
             "dateJoined datetime default now()," +
             "token varchar(256) not null,"+
-            "totalPost int default 0);";
+            "totalPost int default 0," +
+            "totalReward int default 0);";
     public static String CREATE_CATEGORY_TABLE="create table if not exists category(id int auto_increment primary key," +
             "     categoryName varchar(64) not null unique," +
             "     categoryAdded datetime default now()," +
@@ -59,7 +60,16 @@ public class Params {
             "     foreign key(fromUser) references user(id)" +
             "     ,foreign key(toUser) references user(id)," +
             "     foreign key(onProduct) references item(id));";
-
+    public static String CREATE_REWARDS_TABLE="create table if not exists rewards(id int primary key auto_increment," +
+            "     onRequest int not null," +
+            "     toUser int not null," +
+            "     onProduct int not null," +
+            "     dateRecieved datetime default now()," +
+            "     amount int not null," +
+            "     redeemed tinyint default 0," +
+            "     foreign key(onRequest) references requests(id)," +
+            "     foreign key(onProduct) references item(id)," +
+            "     foreign key(toUser) references user(id));";
 
     public static String authFolder="F:/java project/secondHanders/auth/";
     public static String token;
@@ -67,6 +77,9 @@ public class Params {
     public static int userId;
     public static Boolean loogedIn;
     public static User currentUser;
+
+    public static int rewardMax=25;
+    public static int rewardMin=2;
 
     public static String categoryInitial="insert into category(categoryName) values(\"Mobiles\"),(\"Clothes\"),(\"Car\"),(\"Bike\");";
 }

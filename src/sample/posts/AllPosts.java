@@ -81,7 +81,7 @@ public class AllPosts extends Application {
             public void handle(MouseEvent mouseEvent) {
                 Item item=itemListView.getSelectionModel().getSelectedItem();
                 if(item!=null){
-                PostPage postPage=new PostPage(item,database);
+                PostPage postPage=new PostPage(item,database,"AllPost");
                 stage.hide();
                 try {
                     postPage.start(stage);

@@ -1,9 +1,7 @@
 package sample.database;
 
-import sample.models.Category;
-import sample.models.Item;
-import sample.models.Requests;
-import sample.models.User;
+import sample.helper.Utility;
+import sample.models.*;
 import sample.resources.Params;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -30,6 +28,7 @@ public class MySqlOperations {
             stmt.execute(Params.CREATE_CATEGORY_TABLE);
             stmt.execute(Params.CREATE_ITEM_TABLE);
             stmt.execute(Params.CREATE_REQUESTS_TABLE);
+            stmt.execute(Params.CREATE_REWARDS_TABLE);
         }catch(Exception e){ System.out.println(e);}
     }
 
@@ -80,7 +79,7 @@ public class MySqlOperations {
             u.setDateJoined(resultSet.getTimestamp(10).toString());
             u.setToken(resultSet.getString(11));
             u.setTotalPost(resultSet.getInt(12));
-
+            u.setTotalReward(resultSet.getInt(13));
         }
         if(u!=null) {
             FileWriter fw = new FileWriter(Params.authFolder + "token.txt");
@@ -117,7 +116,7 @@ public class MySqlOperations {
             u.setDateJoined(resultSet.getTimestamp(10).toString());
             u.setToken(resultSet.getString(11));
             u.setTotalPost(resultSet.getInt(12));
-
+            u.setTotalReward(resultSet.getInt(13));
         }
         return u;
     }
@@ -141,7 +140,7 @@ public class MySqlOperations {
             u.setDateJoined(resultSet.getTimestamp(10).toString());
             u.setToken(resultSet.getString(11));
             u.setTotalPost(resultSet.getInt(12));
-
+            u.setTotalReward(resultSet.getInt(13));
         }
         return u;
     }
@@ -221,9 +220,7 @@ public class MySqlOperations {
             item.setItemDescription(r.getString(9));
             item.setPostedBy(r.getInt(10));
             item.setItemPic(r.getString(11));
-            if(item.getIsSold()==0){
-                items.add(item);
-            }
+            items.add(item);
         }
         return items;
     }
@@ -340,8 +337,16 @@ public class MySqlOperations {
             pstm.setInt(2,requests.getFromUser());
             pstm.setInt(3,requests.getOnProduct());
             r=pstm.executeUpdate();
-
+            if(r==1){
+                pstm=con.prepareStatement("insert into rewards(onRequest,toUser,onProduct,amount) values(?,?,?,?);");
+                pstm.setInt(1,requests.getId());
+                pstm.setInt(2,Params.userId);
+                pstm.setInt(3,requests.getOnProduct());
+                pstm.setInt(4, Utility.randomNumber(Params.rewardMax,Params.rewardMin));
+                r=pstm.executeUpdate();
+            }
         }
+
         return r;
     }
 
@@ -352,4 +357,34 @@ public class MySqlOperations {
         return r;
     }
 
+    public ArrayList<Rewards> getAllRewards() throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("select * from rewards where toUser=?;");
+        pstm.setInt(1,Params.userId);
+        ResultSet r=pstm.executeQuery();
+        ArrayList<Rewards> rewards=new ArrayList<>();
+        while (r.next()){
+            Rewards re=new Rewards();
+            re.setId(r.getInt(1));
+            re.setOnRequest(r.getInt(2));
+            re.setToUser(r.getInt(3));
+            re.setAmount(r.getInt(5));
+            re.setRedeemed(r.getInt(6));
+            re.setOnProduct(r.getInt(7));
+            re.setDateRecieved(r.getTimestamp(4).toString());
+            rewards.add(re);
+        }
+    return rewards;
+    }
+    public int redeemReward(Rewards rewards) throws SQLException {
+        PreparedStatement pstm=con.prepareStatement("update rewards set redeemed=1 where id=? ");
+        pstm.setInt(1,rewards.getId());
+        int r=pstm.executeUpdate();
+        if(r==1){
+            pstm=con.prepareStatement("update user set totalReward  =totalReward+?  where id=? ;");
+            pstm.setInt(1,rewards.getAmount());
+            pstm.setInt(2,Params.userId);
+            r=pstm.executeUpdate();
+        }
+        return r;
+    }
 }

@@ -105,7 +105,7 @@ public class EditProfile extends Application {
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Main main=new Main();
+                UserPage main=new UserPage(database);
                 stage.hide();
                 try {
                     main.start(stage);

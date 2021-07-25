@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -17,16 +18,18 @@ import sample.database.MySqlOperations;
 import sample.helper.AlertHelper;
 import sample.models.Item;
 import sample.resources.Params;
+import sample.user.MyActivity;
 
 import java.sql.SQLException;
 
 public class PostPage extends Application {
     Item item;
     MySqlOperations database;
-
-    public PostPage(Item item, MySqlOperations database) {
+    String from;
+    public PostPage(Item item, MySqlOperations database,String from) {
         this.item = item;
         this.database = database;
+        this.from=from;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class PostPage extends Application {
         root.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
         root.getStylesheets().add(getClass().getResource("../resources/css/PostPage.css").toExternalForm());
         root.getStyleClass().add("root");
-        stage.setScene(new Scene(root,500,650));
+        stage.setScene(new Scene(root,600,750));
         stage.setTitle("Posts");
         HBox head=new HBox();
         Image image=new Image(getClass().getResource("../resources/images/back_arrow_icon.png").toExternalForm());
@@ -67,21 +70,40 @@ public class PostPage extends Application {
         TextField moneyOffered=new TextField();
         moneyOffered.setPromptText("Enter your offer price");
         moneyOffered.getStyleClass().add("phone");
+        Label soldTo=new Label();
+        Label soldAt=new Label();
+        if(item.getIsSold()==1) {
+             soldTo = new Label("Sold to: " +database.getUsername(item.getSoldTo()));
+             soldAt = new Label("Sold At: " +item.getSoldPrice());
+
+
+        }
+
         if(item.getPostedBy()!=Params.userId && Params.loogedIn)
         root.getChildren().addAll(head,itemPic,itemType,postedBy,datePosted,itemPrice,itemDesc,makeOffer,moneyOffered,submit);
         else
-            root.getChildren().addAll(head,itemPic,itemType,postedBy,datePosted,itemPrice,itemDesc);
+            root.getChildren().addAll(head,itemPic,itemType,postedBy,datePosted,itemPrice,itemDesc,soldTo,soldAt);
         stage.show();
         root.setSpacing(5);
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                if(from=="AllPost"){
                 AllPosts main=new AllPosts(database);
                 stage.hide();
                 try {
                     main.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+                else if(from=="Userpage"){
+                    MyActivity myActivity=new MyActivity(database);
+                    try {
+                        myActivity.start(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
